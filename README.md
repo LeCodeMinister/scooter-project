@@ -133,3 +133,6 @@ Each `ScooterApp` should include the following methods
     - Log the list of registered users to the console.
     - Log the list of stations and how many scooters are at each station to the console.
     - Take a moment to format it nicely so you can read it.
+
+*Notes to add to UML Diagrams:*
+1- Scooter.rent(user) has a parameter now

@@ -7,6 +7,9 @@
     "test": "jest --watch-all --verbose",
     "test:coverage": "jest --verbose --collect-coverage"
   },
+  "jest": {
+    "collectCoverage":true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MultiverseLearningProducts/scooter-project-solution.git"

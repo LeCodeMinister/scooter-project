@@ -1,74 +1,90 @@
 const Scooter = require('../src/Scooter')
 const User = require('../src/User')
-
+//15 tests lol
 describe("Testing Scooter Class", () => {
   //Testing station
-  test("Testing 'station' property (parameter passed)", () => {
-      const scooter1 = new Scooter('London Station');
-      expect(scooter1.station).toBe('London Station');
+  test("Testing 'station' property ('station' parameter passed)", () => {
+	  const scooter1 = new Scooter('London');
+      expect(scooter1.station).toBe('London');
   });
-  test("Testing 'station' property (parameter NOT passed)", () => {
+  test("Testing 'station' property ('station' parameter NOT passed)", () => {
       const scooter1 = new Scooter();
       expect(scooter1.station).toBe(null);
   });
   //Testing user
   test("Testing 'user' property (parameter passed)", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
+      const scooter1 = new Scooter('London', 'Ahmed');
       expect(scooter1.user).toBe('Ahmed');
   });
   test("Testing 'user' property (parameter NOT passed)", () => {
-      const scooter1 = new Scooter('London Station');
+      const scooter1 = new Scooter('London');
       expect(scooter1.user).toBe(null);
   });
   //Testing nextSerial
   test("Testing 'nextSerial' property", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
-      expect(scooter1.nextSerial).toBe(2);
-  });
-  test("Testing 'nextSerial' property", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
-      const scooter2 = new Scooter('Manchester Station', 'Steve');
-      expect(scooter2.nextSerial).toBe(3);
+      const scooter1 = new Scooter('London', 'Ahmed');
+      expect(scooter1.nextSerial).toBe(scooter1.serial + 1);
   });
   //Testing serial
   test("Testing 'serial' property", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
-      expect(scooter1.serial).toBe(1);
+      const scooter1 = new Scooter('London', 'Ahmed');
+      const scooter2 = new Scooter('Manchester', 'Ahmed');
+      expect(scooter2.serial).toBe(scooter1.serial + 1);
+      expect(scooter2.serial).toBe(scooter1.nextSerial);
   });
   //Testing charge
   test("Testing 'charge' property", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
+      const scooter1 = new Scooter('London', 'Ahmed');
       expect(scooter1.charge).toBe(100);
   });
   //Testing isBroken
   test("Testing 'isBroken' property", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
+      const scooter1 = new Scooter('London', 'Ahmed');
       expect(scooter1.isBroken).toBe(false);
   });
   //Testing rent()
-  test("Testing 'rent()' method", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
-      expect(scooter1.rent()).toBe(false);
-  });//needs rentScooter() from ScooterApp here
+  test("Testing 'rent()' method (Charge above %20 & docked)", () => {
+	  const user1 = new User("Ahmed", "QWERTY123", 18);
+      const scooter1 = new Scooter('London', 'Ahmed');
+	  scooter1.rent();
+      expect(scooter1.station).toBe(null);
+      expect(scooter1.user).toBe("Ahmed");
+  });
+  test("Testing 'rent()' method (Charge less than 20%)", () => {
+	  const user1 = new User("Ahmed", "QWERTY123", 18);
+	  const scooter1 = new Scooter('London', 'Ahmed');
+	  scooter1.charge = 15;
+	  expect(scooter1.rent()).toThrow("scooter needs to charge");
+  });
+  test("Testing 'rent()' method (Broken)", () => {
+	  const user1 = new User("Ahmed", "QWERTY123", 18);
+	  const scooter1 = new Scooter('London', 'Ahmed');
+	  scooter1.isBroken = true;
+  	  expect(scooter1.rent()).toThrow("scooter needs repair");
+  });
   //Testing dock(station)
   test("Testing 'dock(station)' method", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
-      //needs rentScooter() from ScooterApp here
-      scooter1.dock('Manchester Station');
-      expect(scooter1.station).toBe('Manchester Station');
-  });//needs dockScooter() from ScooterApp here
+	  const user1 = new User("Ahmed", "QWERTY123", 18);
+      const scooter1 = new Scooter('London', 'Ahmed');
+	  scooter1.rent();
+      scooter1.dock('Manchester');
+      expect(scooter1.user).toBe(null);
+      expect(scooter1.station).toBe('Manchester');
+  });
   //Testing recharge()
-  test("Testing 'recharge()' method", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
+  test("Testing 'recharge()' method", async () => {
+      const scooter1 = new Scooter('London', 'Ahmed');
       scooter1.charge = 0;
-      scooter1.recharge();
+      await scooter1.recharge();
       expect(scooter1.charge).toBe(100);
   });
   //Testing requestRepair()
-  test("Testing 'requestRepair()' method", () => {
-      const scooter1 = new Scooter('London Station', 'Ahmed');
+  test("Testing 'requestRepair()' method", async () => {
+      const scooter1 = new Scooter('London', 'Ahmed');
       scooter1.isBroken = true;
-      scooter1.requestRepair();
+	  const logSpy = jest.spyOn(console, 'log');
+      await scooter1.requestRepair();
       expect(scooter1.isBroken).toBe(false);
+      expect(logSpy).toHaveBeenCalledWith('repair completed');
   });
 });
