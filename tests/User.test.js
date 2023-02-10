@@ -30,7 +30,9 @@ describe("Testing User Class", () => {
     });
     test("Testing 'login' method (wrong password)", () => {
         const user1 = new User("Ahmed", "QWERTY123", 18);
-        expect(user1.login("QWERTY")).toThrow("incorrect password");
+        expect(() => {
+            user1.login("QWERTY");
+        }).toThrow("incorrect password");
     });
     //Testing logout()
     test("Testing 'logout' method (user exists)", () => {
