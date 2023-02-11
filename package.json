@@ -8,7 +8,16 @@
     "test:coverage": "jest --verbose --collect-coverage"
   },
   "jest": {
-    "collectCoverage":true
+    "collectCoverage": true,
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "Test Report"
+        }
+      ]
+    ]
   },
   "repository": {
     "type": "git",
@@ -23,5 +32,8 @@
   "homepage": "https://github.com/MultiverseLearningProducts/scooter-project-solution#readme",
   "dependencies": {
     "jest": "^27.5.1"
+  },
+  "devDependencies": {
+    "jest-html-reporter": "^3.7.0"
   }
 }
