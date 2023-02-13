@@ -1,4 +1,3 @@
-const ScooterApp = require('../src/ScooterApp')
 class Scooter{
   static nextSerial = 1; 
   constructor(station = null) {
@@ -33,7 +32,7 @@ class Scooter{
     console.log('starting repair');
     await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5seconds
     this.isBroken = false;
-    console.log('repair completed');   
+    console.log('repair completed');  
   }
 }
 

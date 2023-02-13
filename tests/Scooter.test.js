@@ -1,5 +1,5 @@
-const Scooter = require('../src/Scooter')
 const User = require('../src/User')
+const Scooter = require('../src/Scooter')
 jest.setTimeout(10000);
 //15 tests lol
 describe("Testing Scooter Class", () => {
